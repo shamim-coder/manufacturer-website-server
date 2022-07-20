@@ -68,6 +68,17 @@ async function run() {
             res.send(tool);
         });
 
+        app.get("/my-orders", jwtVerify, async (req, res) => {
+            const email = req.query.email;
+            const decodedEmail = req.decoded.email;
+            if (email === decodedEmail) {
+                const query = { email };
+                const orders = await orderCollection.find(query).toArray();
+                res.send(orders);
+            } else {
+                res.status(403).send({ message: "Error 403 - Forbidden" });
+            }
+        });
         app.post("/order", async (req, res) => {
             const orderDetails = req.body;
             const result = await orderCollection.insertOne(orderDetails);
