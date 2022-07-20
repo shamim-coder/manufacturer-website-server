@@ -56,18 +56,6 @@ async function run() {
             res.send({ result, token });
         });
 
-        app.get("/tools", jwtVerify, async (req, res) => {
-            const tools = await toolsCollection.find({}).toArray();
-            res.send(tools);
-        });
-
-        app.get("/tool/:id", jwtVerify, async (req, res) => {
-            const id = req.params.id;
-            const query = { _id: ObjectId(id) };
-            const tool = await toolsCollection.findOne(query);
-            res.send(tool);
-        });
-
         app.post("/order", async (req, res) => {
             const orderDetails = req.body;
             const result = await orderCollection.insertOne(orderDetails);
