@@ -36,7 +36,6 @@ async function run() {
         const orderCollection = client.db("dewalt").collection("orders");
 
         // Authentication by JWT and update new user
-
         app.put("/user/:email", async (req, res) => {
             const email = req.params.email;
             const user = req.body;
@@ -56,11 +55,13 @@ async function run() {
             res.send({ result, token });
         });
 
+        // get tools
         app.get("/tools", jwtVerify, async (req, res) => {
             const tools = await toolsCollection.find({}).toArray();
             res.send(tools);
         });
 
+        // get single tools by id
         app.get("/tool/:id", jwtVerify, async (req, res) => {
             const id = req.params.id;
             const query = { _id: ObjectId(id) };
@@ -68,6 +69,7 @@ async function run() {
             res.send(tool);
         });
 
+        // get my orders
         app.get("/my-orders", jwtVerify, async (req, res) => {
             const email = req.query.email;
             const decodedEmail = req.decoded.email;
@@ -79,9 +81,19 @@ async function run() {
                 res.status(403).send({ message: "Error 403 - Forbidden" });
             }
         });
+
+        // post order details
         app.post("/order", async (req, res) => {
             const orderDetails = req.body;
             const result = await orderCollection.insertOne(orderDetails);
+            res.send(result);
+        });
+
+        // delete order
+        app.delete("/order/:id", async (req, res) => {
+            const id = req.params.id;
+            const query = { _id: ObjectId(id) };
+            const result = await orderCollection.deleteOne(query);
             res.send(result);
         });
     } finally {
