@@ -99,7 +99,7 @@ async function run() {
             res.send({ result, token });
         });
 
-        app.patch("/update-user/:email", async (req, res) => {
+        app.patch("/update-user/:email", jwtVerify, async (req, res) => {
             const email = req.params.email;
             const user = req.body;
             const filter = { email: email };
@@ -194,7 +194,7 @@ async function run() {
             res.send(result);
         });
 
-        app.patch("/order/:id", async (req, res) => {
+        app.patch("/order/:id", jwtVerify, async (req, res) => {
             const { id } = req.params;
             const paymentInfo = req.body;
             const filter = { _id: ObjectId(id) };
@@ -212,7 +212,7 @@ async function run() {
             res.send({ updateOrder, updatePayment });
         });
 
-        app.patch("/order/status/:id", async (req, res) => {
+        app.patch("/order/status/:id", jwtVerify, async (req, res) => {
             const { id } = req.params;
             const status = req.body;
             const filter = { _id: ObjectId(id) };
@@ -226,7 +226,7 @@ async function run() {
             res.send(updateOrder);
         });
 
-        app.put("/review/:email", async (req, res) => {
+        app.put("/review/:email", jwtVerify, async (req, res) => {
             const email = req.params.email;
             const review = req.body;
             const filter = { email: email };
