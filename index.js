@@ -125,7 +125,7 @@ async function run() {
         });
 
         // get tools
-        app.get("/tools", jwtVerify, async (req, res) => {
+        app.get("/tools", async (req, res) => {
             const tools = await toolsCollection.find({}).sort({ _id: -1 }).toArray();
             res.send(tools);
         });
@@ -240,7 +240,7 @@ async function run() {
             res.send(result);
         });
 
-        app.get("/reviews", jwtVerify, async (req, res) => {
+        app.get("/reviews", async (req, res) => {
             const reviews = await reviewCollection.find({}).sort({ _id: -1 }).toArray();
             res.send(reviews);
         });
